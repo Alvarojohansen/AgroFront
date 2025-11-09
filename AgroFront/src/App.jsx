@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import WelcomePage from "./components/WelcomePage";
+import WelcomePage from "./components/welcomePage/WelcomePage";
 import NavBar from "./components/navBar/NavBar";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
       <NavBar />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<WelcomePage />}/>
+          <Route path="/" element={<WelcomePage />} />
         </Routes>
       </BrowserRouter>
     </div>
