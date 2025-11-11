@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import flagImg from "../../../assets/argentine-flag-waving-gate-field-600nw-2479157283.png";
-import trigo from "../../../assets/trigo.jpg";
+import flagImg from "../../../assets/siembra.png";
+import trigo from "../../../assets/trigo2.jpg";
 import campo from "../../../assets/campo.jpg";
 
 const images = [flagImg, trigo, campo];
