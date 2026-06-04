@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Search } from "lucide-react";
+import { Link } from "react-router";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -9,38 +10,38 @@ const NavBar = () => {
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* LOGO */}
-          <div className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <div className="bg-green-500 w-6 h-6 rounded-sm"></div>
             <span className="text-xl font-semibold text-gray-800">
               Agro2000
             </span>
-          </div>
+          </Link>
 
           {/* LINKS */}
           <div className="hidden md:flex space-x-8">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
               Inicio
-            </a>
+            </Link>
+            <Link
+              to="/ventas"
+              className="text-gray-700 hover:text-green-600 font-medium"
+            >
+              Ventas
+            </Link>
+            <Link
+              to="/stock"
+              className="text-gray-700 hover:text-green-600 font-medium"
+            >
+              Stock
+            </Link>
             <a
               href="#"
               className="text-gray-700 hover:text-green-600 font-medium"
             >
-              Productos
-            </a>
-            <a
-              href="#"
-              className="text-gray-700 hover:text-green-600 font-medium"
-            >
-              Categorías
-            </a>
-            <a
-              href="#"
-              className="text-gray-700 hover:text-green-600 font-medium"
-            >
-              Ofertas
+              Reportes
             </a>
           </div>
 
@@ -68,17 +69,17 @@ const NavBar = () => {
         {/* Menú móvil desplegable */}
         {menuOpen && (
           <div className="md:hidden mt-2 space-y-1 pb-2">
-            <a href="#" className="block text-gray-700 hover:text-green-600">
+            <Link to="/" className="block text-gray-700 hover:text-green-600">
               Inicio
-            </a>
+            </Link>
+            <Link to="/ventas" className="block text-gray-700 hover:text-green-600">
+              Ventas
+            </Link>
+            <Link to="/stock" className="block text-gray-700 hover:text-green-600">
+              Stock
+            </Link>
             <a href="#" className="block text-gray-700 hover:text-green-600">
-              Productos
-            </a>
-            <a href="#" className="block text-gray-700 hover:text-green-600">
-              Categorías
-            </a>
-            <a href="#" className="block text-gray-700 hover:text-green-600">
-              Ofertas
+              Reportes
             </a>
           </div>
         )}
