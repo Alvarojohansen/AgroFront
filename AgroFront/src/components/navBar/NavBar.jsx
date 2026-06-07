@@ -1,65 +1,87 @@
 import React, { useState } from "react";
-import { Search } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import logo from "../../assets/AgroLogo.png";
+import { useAuth } from "../../context/AuthContext";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-emerald-300">
+    <nav className="bg-emerald-700 shadow-md">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* LOGO */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-green-500 w-6 h-6 rounded-sm"></div>
-            <span className="text-xl font-semibold text-gray-800">
-              Agro2000
-            </span>
+            <img
+              src={logo}
+              alt="AgroGest Logo"
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* LINKS */}
-          <div className="hidden md:flex space-x-8">
-            <Link
-              to="/"
-              className="text-gray-700 hover:text-green-600 font-medium"
-            >
-              Inicio
-            </Link>
-            <Link
-              to="/ventas"
-              className="text-gray-700 hover:text-green-600 font-medium"
-            >
-              Ventas
-            </Link>
-            <Link
-              to="/stock"
-              className="text-gray-700 hover:text-green-600 font-medium"
-            >
-              Stock
-            </Link>
-            <a
-              href="#"
-              className="text-gray-700 hover:text-green-600 font-medium"
-            >
-              Reportes
-            </a>
+          <div className="hidden md:flex space-x-8 items-center">
+            {/* Rutas Protegidas - Solo visibles si hay sesión iniciada */}
+            {user && (
+              <>
+                <Link
+                  to="/ventas"
+                  className="text-emerald-50 hover:text-white font-medium transition-colors"
+                >
+                  Ventas
+                </Link>
+                <Link
+                  to="/stock"
+                  className="text-emerald-50 hover:text-white font-medium transition-colors"
+                >
+                  Stock
+                </Link>
+                <a
+                  href="#"
+                  className="text-emerald-50 hover:text-white font-medium transition-colors"
+                >
+                  Reportes
+                </a>
+              </>
+            )}
           </div>
 
-          {/* BUSCADOR */}
-          <div className="flex items-center border border-gray-300 rounded-md px-2 py-1 w-48 sm:w-64">
-            <input
-              type="text"
-              placeholder="Buscar"
-              className="flex-1 outline-none text-sm text-gray-700"
-            />
-            <Search size={18} className="text-gray-500" />
+          {/* SECCIÓN DE USUARIO / LOGIN */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-emerald-100 text-sm">
+                  Hola, {user.nombre}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="bg-emerald-800 hover:bg-emerald-900 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Cerrar Sesión
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="bg-white text-emerald-800 hover:bg-emerald-50 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Iniciar Sesión
+              </Link>
+            )}
           </div>
 
           {/* MENÚ MÓVIL */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="text-gray-600 hover:text-green-600 focus:outline-none"
+              className="text-emerald-50 hover:text-white focus:outline-none"
             >
               ☰
             </button>
@@ -68,19 +90,38 @@ const NavBar = () => {
 
         {/* Menú móvil desplegable */}
         {menuOpen && (
-          <div className="md:hidden mt-2 space-y-1 pb-2">
-            <Link to="/" className="block text-gray-700 hover:text-green-600">
-              Inicio
-            </Link>
-            <Link to="/ventas" className="block text-gray-700 hover:text-green-600">
-              Ventas
-            </Link>
-            <Link to="/stock" className="block text-gray-700 hover:text-green-600">
-              Stock
-            </Link>
-            <a href="#" className="block text-gray-700 hover:text-green-600">
-              Reportes
-            </a>
+          <div className="md:hidden mt-2 space-y-2 pb-3">
+            {user && (
+              <>
+                <Link to="/ventas" className="block text-emerald-50 hover:text-white px-2">
+                  Ventas
+                </Link>
+                <Link to="/stock" className="block text-emerald-50 hover:text-white px-2">
+                  Stock
+                </Link>
+                <a href="#" className="block text-emerald-50 hover:text-white px-2">
+                  Reportes
+                </a>
+              </>
+            )}
+            
+            <div className="pt-4 border-t border-emerald-600">
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left text-emerald-50 hover:text-white px-2"
+                >
+                  Cerrar Sesión
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="block text-emerald-50 hover:text-white px-2 font-bold"
+                >
+                  Iniciar Sesión
+                </Link>
+              )}
+            </div>
           </div>
         )}
       </div>
