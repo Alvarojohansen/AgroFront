@@ -53,13 +53,27 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (userData) => {
+    try {
+      await fetchApi('/User/postUser', {
+        method: 'POST',
+        body: JSON.stringify(userData)
+      });
+      // El registro fue exitoso, el usuario deberá iniciar sesión manualmente
+      return { success: true };
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      return { success: false, message: error.message || 'Error al registrar el usuario' };
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );

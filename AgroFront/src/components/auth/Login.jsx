@@ -82,6 +82,16 @@ const Login = () => {
             {isLoading ? 'Ingresando...' : 'Ingresar'}
           </button>
         </form>
+
+        <div className="mt-6 text-center text-sm text-gray-600">
+          ¿No tienes una cuenta?{' '}
+          <button 
+            onClick={() => navigate('/register')}
+            className="text-emerald-700 hover:text-emerald-800 font-medium hover:underline"
+          >
+            Regístrate aquí
+          </button>
+        </div>
       </div>
     </div>
   );
