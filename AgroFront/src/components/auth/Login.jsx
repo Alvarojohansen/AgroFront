@@ -3,21 +3,27 @@ import { useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     
-    if (login(username, password)) {
+    const success = await login(email, password);
+    
+    if (success) {
       navigate('/');
     } else {
-      setError('Credenciales inválidas');
+      setError('Credenciales inválidas o error de conexión');
     }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -36,15 +42,16 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Usuario
+              Correo Electrónico
             </label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500 outline-none"
-              placeholder="Ingrese su usuario"
+              placeholder="Ingrese su correo electrónico"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -59,14 +66,20 @@ const Login = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500 outline-none"
               placeholder="Ingrese su contraseña"
               required
+              disabled={isLoading}
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 px-4 rounded-md transition-colors"
+            disabled={isLoading}
+            className={`w-full font-medium py-2 px-4 rounded-md transition-colors ${
+              isLoading 
+                ? 'bg-emerald-400 cursor-not-allowed text-emerald-50' 
+                : 'bg-emerald-700 hover:bg-emerald-800 text-white'
+            }`}
           >
-            Ingresar
+            {isLoading ? 'Ingresando...' : 'Ingresar'}
           </button>
         </form>
       </div>

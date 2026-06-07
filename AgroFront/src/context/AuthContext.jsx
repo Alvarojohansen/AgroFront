@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { fetchApi } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -8,24 +9,58 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (username, password) => {
-    // Aquí podrías agregar la lógica real de validación (API call)
-    // Por ahora lo simulamos.
-    if (username && password) {
-      setUser({ nombre: username, rol: 'admin' });
-      return true;
+  // Intentar recuperar el usuario del token al cargar la app
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Por ahora simulamos que si hay token, el usuario está activo.
+      // En una app real, podrías decodificar el JWT o hacer una petición `/Auth/Me`
+      setUser({ nombre: 'Usuario', rol: 'user' }); 
     }
-    return false;
+    setLoading(false);
+  }, []);
+
+  const login = async (email, password) => {
+    try {
+      // Ajusta la ruta '/Auth/Login' según cómo esté definido en tu controlador de C#
+      const response = await fetchApi('/Authentication/authenticate', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+
+      // El backend retorna un texto crudo "eyJhbGciOi..." o un objeto con { token }
+      let token = null;
+
+      if (typeof response === 'string' && response.startsWith('eyJ')) {
+        token = response; // Es un JWT suelto en texto
+      } else if (response && response.token) {
+        token = response.token; // Es un objeto JSON
+      }
+
+      if (token) {
+        localStorage.setItem('token', token);
+        // Aquí podrías extraer datos del token o de la respuesta
+        setUser({ nombre: email.split('@')[0], rol: 'user' });
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      return false;
+    }
   };
 
   const logout = () => {
+    localStorage.removeItem('token');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

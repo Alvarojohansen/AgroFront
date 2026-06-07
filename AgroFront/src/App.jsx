@@ -6,6 +6,7 @@ import NavBar from "./components/navBar/NavBar";
 import StockManager from "./components/stock/StockManager";
 import VentasManager from "./components/ventas/VentasManager";
 import Login from "./components/auth/Login";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function App() {
   return (
@@ -16,8 +17,22 @@ function App() {
           <Routes>
             <Route path="/" element={<WelcomePage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/stock" element={<StockManager />} />
-            <Route path="/ventas" element={<VentasManager />} />
+            <Route 
+              path="/stock" 
+              element={
+                <ProtectedRoute>
+                  <StockManager />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/ventas" 
+              element={
+                <ProtectedRoute>
+                  <VentasManager />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </div>
       </AuthProvider>
