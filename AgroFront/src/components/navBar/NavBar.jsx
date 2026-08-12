@@ -43,12 +43,18 @@ const NavBar = () => {
                 >
                   Stock
                 </Link>
-                <a
-                  href="#"
+                <Link
+                  to="/clientes"
+                  className="text-emerald-50 hover:text-white font-medium transition-colors"
+                >
+                  Clientes
+                </Link>
+                <Link
+                  to="/reportes"
                   className="text-emerald-50 hover:text-white font-medium transition-colors"
                 >
                   Reportes
-                </a>
+                </Link>
               </>
             )}
           </div>
@@ -90,33 +96,36 @@ const NavBar = () => {
 
         {/* Menú móvil desplegable */}
         {menuOpen && (
-          <div className="md:hidden mt-2 space-y-2 pb-3">
+          <div className="md:hidden mt-2 space-y-2 pb-3 flex flex-col items-center">
             {user && (
               <>
-                <Link to="/ventas" className="block text-emerald-50 hover:text-white px-2">
+                <Link to="/ventas" className="text-emerald-50 hover:text-white px-2 py-1">
                   Ventas
                 </Link>
-                <Link to="/stock" className="block text-emerald-50 hover:text-white px-2">
+                <Link to="/stock" className="text-emerald-50 hover:text-white px-2 py-1">
                   Stock
                 </Link>
-                <a href="#" className="block text-emerald-50 hover:text-white px-2">
+                <Link to="/clientes" className="text-emerald-50 hover:text-white px-2 py-1">
+                  Clientes
+                </Link>
+                <Link to="/reportes" className="text-emerald-50 hover:text-white px-2 py-1">
                   Reportes
-                </a>
+                </Link>
               </>
             )}
-            
-            <div className="pt-4 border-t border-emerald-600">
+
+            <div className="pt-4 border-t border-emerald-600 w-full flex flex-col items-center">
               {user ? (
                 <button
                   onClick={handleLogout}
-                  className="block w-full text-left text-emerald-50 hover:text-white px-2"
+                  className="block w-auto text-left text-emerald-50 hover:text-white px-2 py-1"
                 >
                   Cerrar Sesión
                 </button>
               ) : (
                 <Link
                   to="/login"
-                  className="block text-emerald-50 hover:text-white px-2 font-bold"
+                  className="block w-auto text-emerald-50 hover:text-white px-2 py-1 font-bold"
                 >
                   Iniciar Sesión
                 </Link>

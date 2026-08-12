@@ -8,6 +8,8 @@ import VentasManager from "./components/ventas/VentasManager";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import ProximamentePage from "./components/reportes/ProximamentePage";
+import ClientesManager from "./components/clientes/ClientesManager";
 
 function App() {
   return (
@@ -32,6 +34,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <VentasManager />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/reportes" 
+              element={
+                <ProtectedRoute>
+                  <ProximamentePage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/clientes" 
+              element={
+                <ProtectedRoute>
+                  <ClientesManager />
                 </ProtectedRoute>
               } 
             />
